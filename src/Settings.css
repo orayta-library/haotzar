@@ -1,0 +1,623 @@
+/* Windows 11 Style Settings Page */
+.settings-page-win11 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: var(--appBackgroundColor);
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* הסתרת פס הגלילה */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* רקע תמונה */
+.settings-page-win11::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('/home-background.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.05;
+  z-index: 0;
+  pointer-events: none;
+  display: var(--show-background-image, block);
+}
+
+.settings-page-win11::-webkit-scrollbar {
+  display: none;
+}
+
+.settings-container-win11 {
+  max-width: 1200px;
+  margin: 0 auto;
+  direction: rtl;
+  position: relative;
+  z-index: 1;
+  padding: 32px;
+  padding-bottom: 100px;
+  min-height: 100%;
+}
+
+/* Header */
+.settings-header-win11 {
+  margin-bottom: 32px;
+  text-align: right;
+}
+
+.settings-title-win11 {
+  color: #2c1810;
+  font-size: 32px !important;
+  font-weight: 600 !important;
+  margin: 0;
+  text-align: right;
+}
+
+/* Grid Layout - Windows 11 Style */
+.settings-grid-win11 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  grid-auto-rows: auto;
+  padding-bottom: 50px;
+}
+
+/* Card Base Styles */
+.settings-card-win11 {
+  background: var(--appBackgroundColorSecondary);
+  border: 2px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(92, 61, 46, 0.08);
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-card-win11.expanded {
+  overflow: visible;
+}
+
+.settings-card-win11:hover {
+  background: var(--appBackgroundColorSecondary);
+  border-color: rgba(212, 175, 55, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(92, 61, 46, 0.12);
+}
+
+/* הסרת הכרטיסים הגדולים - כולם באותו גודל */
+.settings-card-win11.large-card {
+  grid-column: span 1;
+  min-height: 120px;
+}
+
+/* Card Content */
+.card-content-win11 {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  z-index: 2;
+  flex: 1; /* תופס את כל המקום הזמין */
+  min-height: 0; /* מאפשר לטקסט להתכווץ */
+}
+
+.card-icon-win11 {
+  font-size: 24px;
+  color: #5c3d2e;
+  flex-shrink: 0;
+}
+
+.card-text-win11 {
+  flex: 1;
+  text-align: right;
+}
+
+.card-subtitle-win11 {
+  color: rgba(44, 24, 16, 0.7);
+  margin-top: 4px;
+}
+
+.card-arrow-win11 {
+  font-size: 16px;
+  color: rgba(44, 24, 16, 0.5);
+  flex-shrink: 0;
+}
+
+/* הסרת עיצובים מיוחדים לכרטיסים ספציפיים */
+.personalization-card {
+  /* הסרת הרקע המיוחד */
+}
+
+.card-background-win11 {
+  display: none; /* מסתיר את הרקע המיוחד */
+}
+
+.personalization-preview {
+  display: none; /* מסתיר את התצוגה המקדימה */
+}
+
+/* About Card - הסרת העיצוב המיוחד */
+.about-card {
+  /* כעת כל הכרטיסים נראים אותו דבר */
+}
+
+/* Theme Card */
+.theme-card .card-content-win11 {
+  justify-content: space-between;
+}
+
+.theme-switch-win11 {
+  flex-shrink: 0;
+}
+
+/* Colors Card */
+.colors-card .card-content-win11 {
+  justify-content: space-between;
+}
+
+.color-preview-win11 {
+  display: flex;
+  align-items: center;
+}
+
+.color-dot-win11 {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Data Card Actions - מותאם לכרטיס רגיל */
+.card-actions-win11 {
+  display: none; /* מסתיר את הכפתורים בכרטיס הרגיל */
+}
+
+/* Expandable Card Styles */
+.expanded-content {
+  padding: 0 20px 20px 20px;
+  animation: slideDown 0.3s ease-out;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  max-height: 500px !important;
+  display: block !important;
+  /* הסתרת פס גלילה */
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.expanded-content::-webkit-scrollbar {
+  display: none !important;
+}
+
+.color-options-expanded,
+.background-options-expanded {
+  max-height: none;
+  overflow: visible;
+}
+
+.color-options-expanded {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.color-option-expanded {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.2s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.color-option-expanded:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.color-option-expanded.selected {
+  border-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(92, 61, 46, 0.4), 0 4px 16px rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+}
+
+.color-check-expanded {
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+/* Background Options Styles */
+.background-options-expanded {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.background-option-expanded {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 16px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  transition: all 0.2s ease;
+  min-width: 120px;
+}
+
+.background-option-expanded:hover {
+  background: rgba(92, 61, 46, 0.05);
+  transform: translateY(-2px);
+}
+
+.background-option-expanded.selected {
+  border-color: #5c3d2e;
+  background: rgba(92, 61, 46, 0.1);
+  transform: translateY(-2px);
+}
+
+.background-preview {
+  width: 80px;
+  height: 60px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(92, 61, 46, 0.2);
+  transition: all 0.2s ease;
+}
+
+.background-preview.none-preview {
+  background: #ffffff;
+  color: #5c3d2e;
+}
+
+.background-preview.image-preview {
+  background: linear-gradient(135deg, #f7ead8 0%, #e8d5b7 100%);
+  background-image: url('/home-background.png');
+  background-size: cover;
+  background-position: center;
+  color: #5c3d2e;
+  position: relative;
+}
+
+.background-preview.image-preview::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(247, 234, 216, 0.7);
+  border-radius: 7px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Data Management Expanded Content */
+.data-section {
+  margin-bottom: 24px;
+  text-align: right;
+}
+
+.data-section:last-child {
+  margin-bottom: 0;
+}
+
+.divider-line {
+  height: 1px;
+  background: rgba(92, 61, 46, 0.2);
+  margin: 20px 0;
+}
+
+.folders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.folder-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: rgba(92, 61, 46, 0.05);
+  border: 1px solid rgba(92, 61, 46, 0.1);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.folder-item:hover {
+  background: rgba(92, 61, 46, 0.1);
+  border-color: rgba(92, 61, 46, 0.2);
+}
+
+.folder-icon {
+  font-size: 16px;
+  color: #5c3d2e;
+  flex-shrink: 0;
+}
+
+.folder-name {
+  flex: 1;
+  text-align: right;
+}
+
+.remove-folder-btn {
+  color: #d13438 !important;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.remove-folder-btn:hover {
+  opacity: 1;
+  background: rgba(209, 52, 56, 0.1) !important;
+}
+
+.add-folder-btn {
+  width: 100%;
+  justify-content: center;
+  border: 1px dashed rgba(92, 61, 46, 0.3);
+  background: transparent;
+  color: #5c3d2e;
+}
+
+.add-folder-btn:hover {
+  background: rgba(92, 61, 46, 0.05) !important;
+  border-color: rgba(92, 61, 46, 0.4);
+}
+
+.backup-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.backup-buttons button {
+  flex: 1;
+  min-width: 140px;
+}
+
+.danger-button-expanded {
+  color: #d13438 !important;
+  border-color: rgba(209, 52, 56, 0.3) !important;
+}
+
+.danger-button-expanded:hover {
+  background: rgba(209, 52, 56, 0.05) !important;
+  border-color: rgba(209, 52, 56, 0.4) !important;
+}
+
+/* Library Folders Card */
+.library-folders-card {
+  min-height: auto !important;
+}
+
+.library-folders-card .card-content-win11 {
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 16px !important;
+  padding: 20px !important;
+}
+
+/* About Page Styles */
+.about-app-card {
+  min-height: auto !important;
+  text-align: center;
+}
+
+.app-logo {
+  margin-bottom: 8px;
+}
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.feature-item {
+  padding: 8px 12px;
+  background: rgba(92, 61, 46, 0.05);
+  border-radius: 6px;
+  border-right: 3px solid rgba(92, 61, 46, 0.3);
+}
+
+.tech-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.tech-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(92, 61, 46, 0.1);
+}
+
+.tech-item:last-child {
+  border-bottom: none;
+}
+
+.thanks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  line-height: 1.6;
+}
+
+/* Back Navigation */
+.back-navigation {
+  margin-bottom: 16px;
+}
+
+.back-button {
+  color: #5c3d2e !important;
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.back-button:hover {
+  background: rgba(92, 61, 46, 0.1) !important;
+}
+
+/* Breadcrumb Navigation */
+.breadcrumb-navigation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.breadcrumb-button {
+  color: #5c3d2e !important;
+  font-size: 32px !important;
+  font-weight: 600 !important;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  min-width: auto;
+  height: auto;
+}
+
+.breadcrumb-button:hover {
+  opacity: 0.7;
+  background: transparent !important;
+}
+
+.breadcrumb-separator {
+  font-size: 20px;
+  color: rgba(44, 24, 16, 0.6);
+  margin: 0 4px;
+}
+
+.current-page-title {
+  color: #2c1810;
+  font-size: 32px !important;
+  font-weight: 600 !important;
+  margin: 0;
+}
+
+/* Placeholder Card */
+.placeholder-card {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.placeholder-card:hover {
+  transform: none;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* Dark Theme */
+[data-theme="dark"] .settings-page-win11 {
+  background-color: #1a1a1a;
+}
+
+[data-theme="dark"] .settings-title-win11 {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .settings-card-win11 {
+  background: #2d2d2d;
+  border-color: rgba(196, 165, 116, 0.2);
+}
+
+[data-theme="dark"] .settings-card-win11:hover {
+  background: #353535;
+  border-color: rgba(196, 165, 116, 0.3);
+}
+
+[data-theme="dark"] .card-icon-win11 {
+  color: #c4a574;
+}
+
+[data-theme="dark"] .card-subtitle-win11 {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="dark"] .card-arrow-win11 {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+[data-theme="dark"] .action-button-win11 {
+  background: rgba(60, 60, 60, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+[data-theme="dark"] .action-button-win11:hover {
+  background: rgba(70, 70, 70, 0.95);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .settings-page-win11 {
+    padding: 20px 16px;
+  }
+  
+  .settings-grid-win11 {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .settings-card-win11.large-card {
+    grid-column: span 1;
+  }
+  
+  .card-actions-win11 {
+    flex-direction: column;
+  }
+  
+  .action-button-win11 {
+    min-width: auto;
+  }
+}
+
+/* Animation removed - no initial card animation */

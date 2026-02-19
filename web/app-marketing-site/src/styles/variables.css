@@ -1,0 +1,15 @@
+:root {
+    --primary-color: #3498db; /* Main brand color */
+    --secondary-color: #2ecc71; /* Secondary accent color */
+    --background-color: #f4f4f4; /* Background color for the site */
+    --text-color: #333333; /* Main text color */
+    --heading-color: #2c3e50; /* Color for headings */
+    --link-color: #2980b9; /* Color for links */
+    --border-color: #e0e0e0; /* Color for borders and dividers */
+    --font-family: 'Helvetica Neue', Arial, sans-serif; /* Main font family */
+    --font-size-base: 16px; /* Base font size */
+    --font-size-large: 24px; /* Large font size for headings */
+    --font-size-small: 14px; /* Small font size for captions */
+    --border-radius: 4px; /* Border radius for buttons and inputs */
+    --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow for elements */
+}

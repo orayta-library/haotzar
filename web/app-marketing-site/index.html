@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אפליקציה שלי - אתר תדמית</title>
+    <link rel="stylesheet" href="src/styles/base.css">
+    <link rel="stylesheet" href="src/styles/components.css">
+    <link rel="stylesheet" href="src/styles/variables.css">
+    <style>
+        .navbar {
+            background: #fff;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar-menu {
+            display: flex;
+            gap: 2rem;
+        }
+        .navbar-item {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .navbar-item:hover {
+            color: #007bff;
+        }
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-cta-button {
+            display: inline-block;
+            background: #fff;
+            color: #667eea;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        .hero-cta-button:hover {
+            transform: translateY(-2px);
+        }
+        .features {
+            padding: 4rem 2rem;
+            background: #f8f9fa;
+        }
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .feature-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .feature-item h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        .testimonials {
+            padding: 4rem 2rem;
+            background: white;
+        }
+        .testimonials h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+        .testimonial-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .testimonial-item {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .feedback {
+            font-style: italic;
+            margin-bottom: 1rem;
+            color: #666;
+        }
+        .name {
+            font-weight: bold;
+            color: #333;
+        }
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+        .footer-links li {
+            display: inline;
+            margin: 0 1rem;
+        }
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <a href="/" class="navbar-item">
+                    <h1>YourAppName</h1>
+                </a>
+            </div>
+            <div class="navbar-menu">
+                <a href="/" class="navbar-item">Home</a>
+                <a href="/about" class="navbar-item">About</a>
+                <a href="/contact" class="navbar-item">Contact</a>
+            </div>
+        </nav>
+
+        <main>
+            <section class="hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">Welcome to Our App</h1>
+                    <p class="hero-description">Discover the amazing features and benefits of using our application.</p>
+                    <a href="#features" class="hero-cta-button">Get Started</a>
+                </div>
+            </section>
+
+            <section id="features" class="features">
+                <h2>Key Features</h2>
+                <div class="features-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">🌟</div>
+                        <h3>Feature One</h3>
+                        <p>Description of feature one, highlighting its benefits and functionalities.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🚀</div>
+                        <h3>Feature Two</h3>
+                        <p>Description of feature two, showcasing its unique aspects.</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Feature Three</h3>
+                        <p>Description of feature three, explaining how it helps users.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="testimonials">
+                <h2>User Testimonials</h2>
+                <div class="testimonial-list">
+                    <div class="testimonial-item">
+                        <p class="feedback">"This app has changed my life! Highly recommend it to everyone."</p>
+                        <p class="name">- John Doe, CEO, Company A</p>
+                    </div>
+                    <div class="testimonial-item">
+                        <p class="feedback">"An amazing experience! The features are top-notch and very user-friendly."</p>
+                        <p class="name">- Jane Smith, Product Manager, Company B</p>
+                    </div>
+                    <div class="testimonial-item">
+                        <p class="feedback">"I love using this app! It has everything I need and more."</p>
+                        <p class="name">- Alice Johnson, Designer, Company C</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2024 Your App Name. All rights reserved.</p>
+                <ul class="footer-links">
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

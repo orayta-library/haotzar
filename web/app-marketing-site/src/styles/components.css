@@ -1,0 +1,60 @@
+/* components.css */
+
+/* Hero Section */
+.hero {
+    background-image: url('../assets/your-background-image.jpg'); /* Replace with your app's background image */
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 100px 20px;
+    text-align: center;
+}
+
+/* Features Section */
+.features {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px 20px;
+    background-color: var(--primary-background-color);
+}
+
+.feature {
+    flex: 1;
+    margin: 0 10px;
+    text-align: center;
+}
+
+/* Testimonials Section */
+.testimonials {
+    background-color: var(--secondary-background-color);
+    padding: 50px 20px;
+    color: var(--text-color);
+}
+
+.testimonial {
+    margin: 20px 0;
+    font-style: italic;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--navbar-background-color);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar a {
+    color: var(--navbar-link-color);
+    text-decoration: none;
+    margin: 0 15px;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--footer-background-color);
+    color: var(--footer-text-color);
+    text-align: center;
+    padding: 20px 0;
+}

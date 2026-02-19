@@ -1,0 +1,118 @@
+name: Build Otzaria Index
+
+# זרימה לבניית אינדקס Meilisearch מספרי אוצריא
+# מורידה את seforim.db, בונה אינדקס ומעלה כ-artifact
+# 
+# הפעלה:
+# 1. ידנית: Actions → Build Otzaria Index → Run workflow
+# 2. אוטומטית: כל יום ראשון בחצות
+#
+# תוצאות:
+# - otzaria-index.tar.gz - אינדקס מוכן לשימוש
+# - otzaria-index-info.txt - מידע על הבניה
+
+on:
+  workflow_dispatch: # ריצה ידנית
+  schedule:
+    - cron: '0 0 * * 0' # כל יום ראשון בחצות (עדכון שבועי)
+
+jobs:
+  build-index:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: |
+          npm install better-sqlite3
+          npm install minimist
+      
+      - name: Create books directory
+        run: mkdir -p books/אוצריא
+      
+      - name: Download Otzaria database
+        run: |
+          echo "📥 Downloading seforim.zip..."
+          curl -L -o seforim.zip https://github.com/Otzaria/otzaria-library/releases/download/library-db-1/seforim.zip
+          
+          echo "📦 Extracting seforim.db..."
+          unzip -q seforim.zip -d books/אוצריא/
+          
+          echo "✅ Database downloaded and extracted"
+          ls -lh books/אוצריא/
+      
+      - name: Build Otzaria index
+        run: |
+          echo "🚀 Building Otzaria index..."
+          node --expose-gc scripts/build-otzaria-index.js
+      
+      - name: Verify index was created
+        run: |
+          echo "🔍 Verifying index files..."
+          
+          if [ ! -f "index-otzaria/meili-docs.json" ]; then
+            echo "❌ meili-docs.json not found!"
+            exit 1
+          fi
+          
+          if [ ! -f "index-otzaria/posmap.sqlite" ]; then
+            echo "❌ posmap.sqlite not found!"
+            exit 1
+          fi
+          
+          echo "✅ Index files verified"
+          
+          # הצג סטטיסטיקות
+          echo ""
+          echo "📊 Index Statistics:"
+          echo "==================="
+          wc -l index-otzaria/meili-docs.json | awk '{print "Documents: " $1}'
+          du -h index-otzaria/meili-docs.json | awk '{print "JSON Size: " $1}'
+          du -h index-otzaria/posmap.sqlite | awk '{print "SQLite Size: " $1}'
+      
+      - name: Create index archive
+        run: |
+          echo "📦 Creating index archive..."
+          cd index-otzaria
+          tar -czf ../otzaria-index.tar.gz .
+          cd ..
+          
+          echo "✅ Archive created"
+          ls -lh otzaria-index.tar.gz
+      
+      - name: Upload index as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: otzaria-index
+          path: otzaria-index.tar.gz
+          retention-days: 90
+      
+      - name: Generate index info
+        run: |
+          echo "📊 Index Information" > index-info.txt
+          echo "===================" >> index-info.txt
+          echo "" >> index-info.txt
+          echo "Build Date: $(date)" >> index-info.txt
+          echo "Build Commit: ${{ github.sha }}" >> index-info.txt
+          echo "" >> index-info.txt
+          echo "Files:" >> index-info.txt
+          ls -lh index-otzaria/ >> index-info.txt
+          echo "" >> index-info.txt
+          echo "Archive Size:" >> index-info.txt
+          ls -lh otzaria-index.tar.gz >> index-info.txt
+          
+          cat index-info.txt
+      
+      - name: Upload index info
+        uses: actions/upload-artifact@v4
+        with:
+          name: otzaria-index-info
+          path: index-info.txt
+          retention-days: 90

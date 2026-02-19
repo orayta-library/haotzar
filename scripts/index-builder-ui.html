@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>בניית אינדקס חיפוש - האויצר</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      color: #333;
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: #666;
+      font-size: 16px;
+    }
+
+    .status {
+      background: #f5f5f5;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .status-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .status-label {
+      color: #666;
+      font-size: 14px;
+    }
+
+    .status-value {
+      color: #333;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .progress-container {
+      margin: 30px 0;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: #e0e0e0;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      transition: width 0.3s ease;
+      border-radius: 6px;
+    }
+
+    .progress-text {
+      text-align: center;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .current-file {
+      background: #fff3cd;
+      border-right: 4px solid #ffc107;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      display: none;
+    }
+
+    .current-file.active {
+      display: block;
+    }
+
+    .current-file-label {
+      color: #856404;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .current-file-name {
+      color: #333;
+      font-size: 14px;
+      word-break: break-all;
+    }
+
+    .button {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .button-primary {
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .button-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .button-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .button-success {
+      background: #28a745;
+      color: white;
+    }
+
+    .log-container {
+      margin-top: 20px;
+      max-height: 200px;
+      overflow-y: auto;
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 15px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      display: none;
+    }
+
+    .log-container.active {
+      display: block;
+    }
+
+    .log-entry {
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    .log-entry.error {
+      color: #dc3545;
+    }
+
+    .log-entry.success {
+      color: #28a745;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-left: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="icon">📚</div>
+      <h1>בניית אינדקס חיפוש</h1>
+      <p>האויצר - ספריית הקודש הדיגיטלית</p>
+    </div>
+
+    <div class="current-file" id="serverHint" style="display:none">
+      <div class="current-file-label">שימו לב:</div>
+      <div class="current-file-name">
+        כדי לבנות אינדקס צריך להריץ את השרת:
+        <br />
+        <b>node scripts/tools.js index:ui</b>
+      </div>
+    </div>
+
+    <div class="status">
+      <div class="status-row">
+        <span class="status-label">קבצים שעובדו:</span>
+        <span class="status-value" id="filesProcessed">0 / 0</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">מילים באינדקס:</span>
+        <span class="status-value" id="totalWords">0</span>
+      </div>
+      <div class="status-row">
+        <span class="status-label">זמן שחלף:</span>
+        <span class="status-value" id="elapsedTime">00:00</span>
+      </div>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      </div>
+      <div class="progress-text" id="progressText">0%</div>
+    </div>
+
+    <div class="current-file" id="currentFile">
+      <div class="current-file-label">מעבד כעת:</div>
+      <div class="current-file-name" id="currentFileName">-</div>
+    </div>
+
+    <button class="button button-primary" id="startButton" onclick="startIndexing()">
+      התחל בניית אינדקס
+    </button>
+
+    <div class="log-container" id="logContainer"></div>
+  </div>
+
+  <script>
+    let startTime;
+    let timerInterval;
+
+    function addLog(message, type = 'info') {
+      const logContainer = document.getElementById('logContainer');
+      logContainer.classList.add('active');
+      
+      const entry = document.createElement('div');
+      entry.className = `log-entry ${type}`;
+      entry.textContent = `[${new Date().toLocaleTimeString('he-IL')}] ${message}`;
+      
+      logContainer.appendChild(entry);
+      logContainer.scrollTop = logContainer.scrollHeight;
+    }
+
+    function updateProgress(current, total, fileName) {
+      const percentage = total > 0 ? (current / total * 100).toFixed(1) : 0;
+      
+      document.getElementById('progressFill').style.width = percentage + '%';
+      document.getElementById('progressText').textContent = percentage + '%';
+      document.getElementById('filesProcessed').textContent = `${current} / ${total}`;
+      
+      if (fileName) {
+        document.getElementById('currentFile').classList.add('active');
+        document.getElementById('currentFileName').textContent = fileName;
+      }
+    }
+
+    function startTimer() {
+      startTime = Date.now();
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        document.getElementById('elapsedTime').textContent = 
+          `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+      }
+    }
+
+    async function startIndexing() {
+      const button = document.getElementById('startButton');
+      button.disabled = true;
+      button.innerHTML = 'בונה אינדקס... <span class="spinner"></span>';
+      
+      addLog('מתחיל בניית אינדקס...');
+      startTimer();
+
+      try {
+        addLog('שולח בקשה לשרת...');
+
+        const apiBase = window.location.protocol === 'file:' ? 'http://localhost:3456' : '';
+        if (window.location.protocol === 'file:') {
+          const hint = document.getElementById('serverHint');
+          hint.style.display = 'block';
+          addLog('⚠️ הדף פתוח כ-file:// לכן הבקשה נשלחת ל-http://localhost:3456. ודא שהשרת רץ.');
+        }
+        
+        const response = await fetch(apiBase + '/api/build-index', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          // נסה לחלץ סטטיסטיקות מהפלט
+          const outputLines = result.output.split('\n');
+          let totalFiles = 0;
+          let totalWords = 0;
+          
+          outputLines.forEach(line => {
+            const filesMatch = line.match(/נמצאו (\d+) קבצים/);
+            if (filesMatch) totalFiles = parseInt(filesMatch[1]);
+            
+            const wordsMatch = line.match(/מילים ייחודיות: (\d+)/);
+            if (wordsMatch) totalWords = parseInt(wordsMatch[1]);
+          });
+          
+          updateProgress(totalFiles, totalFiles, null);
+          
+          handleSuccess({
+            totalFiles: totalFiles || 0,
+            totalWords: totalWords || 0
+          });
+          
+          // הצג את הפלט המלא בלוג
+          outputLines.forEach(line => {
+            if (line.trim()) addLog(line);
+          });
+        } else {
+          handleError(result.message || 'שגיאה לא ידועה');
+          addLog(result.output, 'error');
+        }
+      } catch (error) {
+        handleError(error.message);
+      }
+    }
+
+    function handleSuccess(result) {
+      stopTimer();
+      addLog(`✅ אינדקס הושלם בהצלחה!`, 'success');
+      addLog(`סה"כ קבצים: ${result.totalFiles}`, 'success');
+      addLog(`מילים ייחודיות: ${result.totalWords}`, 'success');
+      
+      document.getElementById('totalWords').textContent = result.totalWords.toLocaleString('he-IL');
+      
+      const button = document.getElementById('startButton');
+      button.className = 'button button-success';
+      button.innerHTML = '✅ הושלם בהצלחה!';
+      button.disabled = false;
+      
+      document.getElementById('currentFile').classList.remove('active');
+    }
+
+    function handleError(errorMessage) {
+      stopTimer();
+      addLog(`❌ שגיאה: ${errorMessage}`, 'error');
+      
+      const button = document.getElementById('startButton');
+      button.disabled = false;
+      button.innerHTML = 'נסה שוב';
+    }
+
+    // סימולציה לבדיקה
+    function simulateIndexing() {
+      const files = ['ברכות.pdf', 'שבת.pdf', 'עירובין.pdf', 'פסחים.pdf'];
+      let current = 0;
+      
+      const interval = setInterval(() => {
+        if (current >= files.length) {
+          clearInterval(interval);
+          handleSuccess({
+            totalFiles: files.length,
+            totalWords: 125000
+          });
+          return;
+        }
+        
+        updateProgress(current + 1, files.length, files[current]);
+        addLog(`מעבד: ${files[current]}`);
+        current++;
+      }, 1000);
+    }
+  </script>
+</body>
+</html>

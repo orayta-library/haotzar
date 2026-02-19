@@ -1,0 +1,470 @@
+.library-sidebar {
+  width: 240px;
+  height: 100%;
+  background: var(--appBackgroundColorSecondary);
+  border-left: 2px solid rgba(212, 175, 55, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.library-sidebar.collapsed {
+  width: 0;
+  opacity: 0;
+  border-left-width: 0;
+  pointer-events: none;
+}
+
+.library-sidebar-search-wrapper {
+  position: relative;
+  padding: 10px 12px;
+  border-bottom: 2px solid rgba(212, 175, 55, 0.2);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  direction: ltr;
+  box-sizing: border-box;
+}
+
+.library-sidebar-close {
+  padding: 6px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(42, 24, 16, 0.65);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  order: 1;
+}
+
+.library-sidebar-close:hover {
+  background: rgba(212, 175, 55, 0.12);
+  color: #8b6f47;
+}
+
+/* כפתור תצוגה מקדימה - בצד שמאל */
+.sidebar-preview-btn {
+  padding: 8px 12px;
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 6px;
+  background: white;
+  color: #8b6f47;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  order: 3; /* אחרון בסדר - בצד שמאל */
+}
+
+.sidebar-preview-btn:hover {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: #d4af37;
+}
+
+.sidebar-preview-btn.active {
+  background: #d4af37;
+  color: white;
+  border-color: #d4af37;
+}
+
+.library-sidebar-search-input {
+  flex: 1;
+  padding: 10px 32px 10px 15px;
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 8px;
+  background: white;
+  color: #2a1810;
+  font-size: 14px;
+  font-family: inherit;
+  direction: rtl;
+  transition: all 0.2s;
+  box-sizing: border-box;
+  order: 2;
+  min-width: 0;
+}
+
+.library-sidebar-search-input:focus {
+  outline: none;
+  border-color: #d4af37;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.library-sidebar-search-input::placeholder {
+  color: rgba(42, 24, 16, 0.5);
+  text-align: right;
+}
+
+.library-sidebar-clear-search {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  color: #8b6f47;
+  font-size: 20px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: all 0.2s;
+  order: 2; /* שני בסדר */
+}
+
+.library-sidebar-clear-search:hover {
+  background: rgba(212, 175, 55, 0.1);
+  color: #d4af37;
+}
+
+/* מיכל תצוגה מקדימה */
+.sidebar-preview-container {
+  height: 100%;
+  overflow: hidden;
+}
+
+.library-sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.library-sidebar-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* צומת בעץ */
+.sidebar-tree-node {
+  user-select: none;
+}
+
+/* פריט בעץ */
+.sidebar-tree-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px 8px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  color: #2a1810;
+  font-size: 14px;
+  direction: rtl;
+  position: relative;
+}
+
+.sidebar-tree-item:hover {
+  background: rgba(212, 175, 55, 0.08);
+}
+
+.sidebar-tree-item:hover {
+  background: rgba(212, 175, 55, 0.1);
+}
+
+.sidebar-tree-item.folder {
+  font-weight: 500;
+}
+
+.sidebar-tree-item.file:hover {
+  background: rgba(139, 111, 71, 0.15);
+}
+
+/* אייקונים */
+.sidebar-tree-chevron {
+  display: flex;
+  align-items: center;
+  color: #8b6f47;
+  font-size: 16px;
+  transition: transform 0.2s ease;
+  order: 1;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+
+.sidebar-tree-chevron:hover {
+  background: rgba(212, 175, 55, 0.15);
+  color: #d4af37;
+}
+
+.sidebar-tree-icon {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  color: #d4af37;
+  order: 2;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.sidebar-tree-icon:hover {
+  background: rgba(212, 175, 55, 0.15);
+}
+
+.sidebar-tree-item.file .sidebar-tree-icon {
+  color: #8b6f47;
+}
+
+/* תווית */
+.sidebar-tree-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  order: 3;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin: -4px 0;
+}
+
+.sidebar-tree-label:hover {
+  background: rgba(212, 175, 55, 0.1);
+}
+
+/* מונה פריטים */
+.sidebar-tree-count {
+  font-size: 12px;
+  color: rgba(42, 24, 16, 0.5);
+  font-weight: normal;
+  order: 4;
+  margin-left: auto;
+}
+
+/* ילדים */
+.sidebar-tree-children {
+  margin-left: 0;
+}
+
+.library-sidebar-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: rgba(42, 24, 16, 0.5);
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ספרים מוצמדים */
+.pinned-books-section {
+  margin-bottom: 8px;
+}
+
+.pinned-books-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(42, 24, 16, 0.6);
+  direction: rtl;
+  margin-bottom: 4px;
+}
+
+.pinned-book-item {
+  position: relative;
+}
+
+.pinned-book-item .sidebar-tree-icon {
+  order: 2;
+}
+
+.pinned-book-item .sidebar-tree-label {
+  order: 3;
+}
+
+.pinned-icon {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #d4af37;
+  order: 1;
+  margin-left: 4px;
+}
+
+.unpin-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #8b6f47;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+  margin-left: auto;
+  opacity: 0;
+  order: 4;
+}
+
+.pinned-book-item:hover .unpin-btn {
+  opacity: 1;
+}
+
+.pinned-book-item:hover .pinned-icon {
+  opacity: 0;
+}
+
+.unpin-btn:hover {
+  background: rgba(212, 175, 55, 0.2);
+  color: #d4af37;
+}
+
+.pinned-books-divider {
+  height: 1px;
+  background: rgba(212, 175, 55, 0.15);
+  margin: 8px 12px;
+}
+
+/* מצב כהה */
+[data-theme="dark"] .library-sidebar {
+  background: #1a1a1a;
+  border-color: rgba(196, 165, 116, 0.2);
+}
+
+[data-theme="dark"] .library-sidebar-search-wrapper {
+  border-bottom-color: rgba(196, 165, 116, 0.2);
+}
+
+[data-theme="dark"] .library-sidebar-search-input {
+  background: rgba(232, 220, 196, 0.1);
+  border-color: rgba(196, 165, 116, 0.3);
+  color: #e8dcc4;
+}
+
+[data-theme="dark"] .library-sidebar-close {
+  background: transparent;
+  color: rgba(232, 220, 196, 0.65);
+}
+
+[data-theme="dark"] .library-sidebar-close:hover {
+  background: rgba(196, 165, 116, 0.1);
+  color: #c4a574;
+}
+
+[data-theme="dark"] .library-sidebar-search-input:focus {
+  border-color: #c4a574;
+  box-shadow: 0 0 0 3px rgba(196, 165, 116, 0.1);
+}
+
+[data-theme="dark"] .library-sidebar-search-input::placeholder {
+  color: rgba(232, 220, 196, 0.5);
+}
+
+[data-theme="dark"] .library-sidebar-clear-search {
+  color: #a68a5c;
+}
+
+[data-theme="dark"] .library-sidebar-clear-search:hover {
+  background: rgba(196, 165, 116, 0.1);
+  color: #c4a574;
+}
+
+[data-theme="dark"] .sidebar-preview-btn {
+  background: rgba(232, 220, 196, 0.1);
+  border-color: rgba(196, 165, 116, 0.3);
+  color: #a68a5c;
+}
+
+[data-theme="dark"] .sidebar-preview-btn:hover {
+  background: rgba(196, 165, 116, 0.1);
+  border-color: #c4a574;
+}
+
+[data-theme="dark"] .sidebar-preview-btn.active {
+  background: #c4a574;
+  color: #2a1810;
+  border-color: #c4a574;
+}
+
+[data-theme="dark"] .sidebar-tree-item {
+  color: #e8dcc4;
+}
+
+[data-theme="dark"] .sidebar-tree-item:hover {
+  background: rgba(196, 165, 116, 0.08);
+}
+
+[data-theme="dark"] .sidebar-tree-item:hover {
+  background: rgba(196, 165, 116, 0.1);
+}
+
+[data-theme="dark"] .sidebar-tree-item.file:hover {
+  background: rgba(166, 138, 92, 0.15);
+}
+
+[data-theme="dark"] .sidebar-tree-chevron {
+  color: #a68a5c;
+}
+
+[data-theme="dark"] .sidebar-tree-chevron:hover {
+  background: rgba(196, 165, 116, 0.15);
+  color: #c4a574;
+}
+
+[data-theme="dark"] .sidebar-tree-icon {
+  color: #c4a574;
+}
+
+[data-theme="dark"] .sidebar-tree-icon:hover {
+  background: rgba(196, 165, 116, 0.15);
+}
+
+[data-theme="dark"] .sidebar-tree-item.file .sidebar-tree-icon {
+  color: #a68a5c;
+}
+
+[data-theme="dark"] .sidebar-tree-label:hover {
+  background: rgba(196, 165, 116, 0.1);
+}
+
+[data-theme="dark"] .sidebar-tree-count {
+  color: rgba(232, 220, 196, 0.5);
+}
+
+[data-theme="dark"] .library-sidebar-empty {
+  color: rgba(232, 220, 196, 0.5);
+}
+
+/* מצב כהה - ספרים מוצמדים */
+[data-theme="dark"] .pinned-books-header {
+  color: rgba(232, 220, 196, 0.6);
+}
+
+[data-theme="dark"] .pinned-icon {
+  color: #c4a574;
+}
+
+[data-theme="dark"] .unpin-btn {
+  color: #a68a5c;
+}
+
+[data-theme="dark"] .unpin-btn:hover {
+  background: rgba(196, 165, 116, 0.2);
+  color: #c4a574;
+}
+
+[data-theme="dark"] .pinned-books-divider {
+  background: rgba(196, 165, 116, 0.15);
+}
