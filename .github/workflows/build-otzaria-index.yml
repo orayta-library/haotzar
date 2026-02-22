@@ -1,0 +1,72 @@
+name: Build Otzaria Index
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'
+jobs:
+  build-index-part1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 359
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install better-sqlite3 minimist
+      - run: mkdir -p books/אוצריא
+      - uses: actions/cache@v4
+        id: db-cache
+        with:
+          path: books/אוצריא/seforim.db
+          key: otzaria-db-v1
+      - if: steps.db-cache.outputs.cache-hit != 'true'
+        run: |
+          curl -L -f -o seforim.zip --max-time 300 --retry 3 --retry-delay 5 https://github.com/Otzaria/otzaria-library/releases/download/library-db-1/seforim.db.zip
+          unzip -q seforim.zip -d books/אוצריא/
+      - uses: actions/cache@v4
+        id: index-cache
+        with:
+          path: index-otzaria
+          key: otzaria-index-part1-${{ github.run_id }}
+      - if: steps.index-cache.outputs.cache-hit != 'true'
+        run: node --expose-gc --max-old-space-size=7168 scripts/build-otzaria-index.js --part 1 --flushEvery 5
+  build-index-part2:
+    needs: build-index-part1
+    runs-on: ubuntu-latest
+    timeout-minutes: 359
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install better-sqlite3 minimist
+      - uses: actions/cache@v4
+        with:
+          path: index-otzaria
+          key: otzaria-index-part1-${{ github.run_id }}
+      - run: node --expose-gc --max-old-space-size=7168 scripts/build-otzaria-index.js --part 2 --flushEvery 5
+      - run: |
+          if [ ! -f "index-otzaria/meili-docs.json" ] || [ ! -f "index-otzaria/posmap.sqlite" ]; then
+            echo "Index files missing"
+            exit 1
+          fi
+      - run: |
+          cd index-otzaria
+          tar -cf ../otzaria-index.tar .
+          cd ..
+          gzip -9 otzaria-index.tar
+      - uses: actions/upload-artifact@v4
+        with:
+          name: otzaria-index
+          path: otzaria-index.tar.gz
+          retention-days: 90
+      - run: |
+          echo "Build Date: $(date)" > index-info.txt
+          echo "Build Commit: ${{ github.sha }}" >> index-info.txt
+          ls -lh index-otzaria/ >> index-info.txt
+          ls -lh otzaria-index.tar.gz >> index-info.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: otzaria-index-info
+          path: index-info.txt
+          retention-days: 90
